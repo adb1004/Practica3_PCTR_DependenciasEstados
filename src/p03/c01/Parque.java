@@ -45,6 +45,19 @@ public class Parque implements IParque{
 	// 
 	// TODO Método salirDelParque
 	//
+	public void salirDelParque(String puerta){
+		
+		// Si no hay entradas por esa puerta, inicializamos
+				if (contadoresPersonasPuerta.get(puerta) == null){
+					contadoresPersonasPuerta.put(puerta, 0);
+				}
+				
+				contadorPersonasTotales--;		
+				contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
+				
+				// Imprimimos el estado del parque
+				imprimirInfo(puerta, "Salida");
+	}
 	
 	
 	private void imprimirInfo (String puerta, String movimiento){
