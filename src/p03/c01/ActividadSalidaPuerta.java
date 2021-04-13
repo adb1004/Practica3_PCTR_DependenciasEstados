@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ActividadSalidaPuerta{
+public class ActividadSalidaPuerta implements Runnable{
 
 	private static final int NUMSALIDAS = 20;
 	private String puerta;
