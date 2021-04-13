@@ -6,21 +6,20 @@ import java.util.Hashtable;
 public class Parque implements IParque{
 
 	private static final int MINPERSONAS=0;
-	private static final int MAXPERSONAS=50;
+	private int maxPersonas;
 	private int contadorPersonasTotales;
 	private Hashtable<String, Integer> contadoresPersonasPuerta;
 	
 	
-	public Parque() {	// TODO
+	public Parque(int maxPersonas) {	
 		contadorPersonasTotales = 0;
 		contadoresPersonasPuerta = new Hashtable<String, Integer>();
-		// TODO
+		this.maxPersonas=maxPersonas;
 	}
 
 
 	@Override
-	public void entrarAlParque(String puerta){		// TODO
-		
+	public synchronized void entrarAlParque(String puerta){				
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null){
 			contadoresPersonasPuerta.put(puerta, 0);
@@ -37,17 +36,18 @@ public class Parque implements IParque{
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 		
-		// TODO
-		
+		//Notificamos a todos los hilos
+		notifyAll();
+			
 		// Comprobar los invariantes
 		checkInvariante();
 		
 	}
 	
 	// 
-	// TODO Método salirDelParque
+	//  Método salirDelParque
 	//
-	public void salirDelParque(String puerta){
+	public synchronized void salirDelParque(String puerta){
 		
 		// Si no hay entradas por esa puerta, inicializamos
 				if (contadoresPersonasPuerta.get(puerta) == null){
@@ -63,6 +63,9 @@ public class Parque implements IParque{
 				
 				// Imprimimos el estado del parque
 				imprimirInfo(puerta, "Salida");
+				
+				//Notificamos a todos los hilos
+				notifyAll();
 				
 				// Comprobar los invariantes
 				checkInvariante();
@@ -92,11 +95,11 @@ public class Parque implements IParque{
 	protected void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
 		assert MINPERSONAS <= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como mínimo 0";
-		assert MAXPERSONAS >= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como máximo 50";
+		assert maxPersonas >= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como máximo 50";
 	}
 
-	protected void comprobarAntesDeEntrar(){	
-		if(contadorPersonasTotales == MAXPERSONAS) {
+	protected synchronized void comprobarAntesDeEntrar(){	
+		if(contadorPersonasTotales == maxPersonas) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -106,7 +109,7 @@ public class Parque implements IParque{
 		}
 	}
 
-	protected void comprobarAntesDeSalir(){
+	protected synchronized void comprobarAntesDeSalir(){
 		if(contadorPersonasTotales == MINPERSONAS) {
 				try {
 					wait();
