@@ -26,7 +26,8 @@ public class Parque implements IParque{
 			contadoresPersonasPuerta.put(puerta, 0);
 		}
 		
-		// TODO
+		//Comprobamos si cumple que el total de personas no supere el maximo.
+		comprobarAntesDeEntrar();
 				
 		
 		// Aumentamos el contador total y el individual
@@ -53,6 +54,10 @@ public class Parque implements IParque{
 					contadoresPersonasPuerta.put(puerta, 0);
 				}
 				
+				//Comprobamos si cumple que el total de personas no sea menor que el minimo.
+				comprobarAntesDeSalir();
+				
+				// Disminuimos el contador total y el individual
 				contadorPersonasTotales--;		
 				contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 				
@@ -90,16 +95,26 @@ public class Parque implements IParque{
 		assert MAXPERSONAS >= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como máximo 50";
 	}
 
-	protected void comprobarAntesDeEntrar(){	// TODO
-		//
-		// TODO
-		//
+	protected void comprobarAntesDeEntrar(){	
+		if(contadorPersonasTotales == MAXPERSONAS) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		
+		}
 	}
 
-	protected void comprobarAntesDeSalir(){		// TODO
-		//
-		// TODO
-		//
+	protected void comprobarAntesDeSalir(){
+		if(contadorPersonasTotales == MINPERSONAS) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			
+		}
 	}
 
 
