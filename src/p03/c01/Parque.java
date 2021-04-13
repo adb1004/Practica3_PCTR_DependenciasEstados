@@ -5,7 +5,8 @@ import java.util.Hashtable;
 
 public class Parque implements IParque{
 
-	// TODO 
+	private static final int MINPERSONAS=0;
+	private static final int MAXPERSONAS=50;
 	private int contadorPersonasTotales;
 	private Hashtable<String, Integer> contadoresPersonasPuerta;
 	
@@ -82,8 +83,8 @@ public class Parque implements IParque{
 	
 	protected void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
-		// TODO 
-		// TODO
+		assert MINPERSONAS <= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como mínimo 0";
+		assert MAXPERSONAS >= contadorPersonasTotales : "INV: La suma de contadores de las puertas debe como máximo 50";
 	}
 
 	protected void comprobarAntesDeEntrar(){	// TODO
